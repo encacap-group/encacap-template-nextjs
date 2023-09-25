@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Source_Sans_3 } from 'next/font/google';
 import { ReactElement } from 'react';
+import '../styles/index.scss';
 
 interface RootLayoutProps {
   children: ReactElement;

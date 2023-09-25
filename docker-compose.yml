@@ -1,0 +1,32 @@
+# This docker-compose using the external network to communicate with the other containers.
+# Before start, create the network with the command: docker network create `network_name`, and change the network name in the docker-compose file.
+# Run `docker network create encacap-template-network` to create the network.
+
+version: '3.9'
+
+name: encacap-template
+
+services:
+  fe-main-dev:
+    image: encacap-template-nextjs:dev
+    container_name: encacap-template
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: development
+    # Don't restart in `dev` environment.
+    ports:
+      - 4102:3000
+    command: bun dev --port 3000 --hostname 0.0.0.0
+    restart: unless-stopped
+    networks:
+      - encacap-template-network
+    env_file:
+      - ./.env.development
+    volumes:
+      - ./src:/app/src
+      - ./node_modules:/app/node_modules
+
+networks:
+  encacap-template-network:
+    external: true
